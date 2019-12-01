@@ -6,14 +6,9 @@ import * as loginActions from "store/modules/user";
 export function* login({ payload }) {
   // login Action before redirection
   const { userId, password } = payload;
-  console.log(userId, password);
   yield put(loginActions.createLoginStart());
-  if (userId === "test" && password === "test") {
-    yield put(loginActions.createLoginSuccess({ userId, password }));
-    yield put(push("/main"));
-  } else {
-    yield put(loginActions.createLoginFailed());
-  }
+  yield put(loginActions.createLoginSuccess({ userId, password }));
+  yield put(push("/main"));
 }
 
 export function* logout() {

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextField, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
+import { useFormik } from "formik";
 
 const useStylesTextField = makeStyles(theme => ({
   root: {
@@ -29,29 +30,41 @@ const useStylesTextField = makeStyles(theme => ({
   }
 }));
 
+const validate = values => {
+  const errors = {};
+  if (!values.userId) {
+    errors.userId = "userId Required";
+  } else if (values.userId !== "test") {
+    errors.userId = "test 아님";
+  }
+
+  if (!values.password) {
+    errors.password = "password Required";
+  } else if (values.password !== "test") {
+    errors.password = "test 아님";
+  }
+  return errors;
+};
+
 const LoginForm = () => {
-  const [formValue, setForm] = useState({ userId: "", password: "" });
   const textFieldStyle = useStylesTextField();
   const dispatch = useDispatch();
 
-  //   const { location, action } = useSelector(state => {
-  //     const { location, action } = state.router;
-  //     return {
-  //       location,
-  //       action
-  //     };
-  //   }); // useSelector, useDispatch
+  const loginFormik = useFormik({
+    initialValues: {
+      userId: "",
+      password: ""
+    },
+    validate,
+    onSubmit: values => {
+      dispatch({ type: "SAGA_LOGIN", payload: values });
+    }
+  });
 
-  const handleChange = e => {
-    setForm({ ...formValue, [e.target.id]: e.target.value });
-  };
-
-  const onClickSubmit = () => {
-    dispatch({ type: "SAGA_LOGIN", payload: formValue });
-  };
-
+  console.log(loginFormik.errors);
+  console.log(loginFormik.touched);
   return (
-    <>
+    <form onSubmit={loginFormik.handleSubmit}>
       <TextField
         variant="outlined"
         margin="normal"
@@ -60,7 +73,10 @@ const LoginForm = () => {
         autoFocus
         fullWidth
         autoComplete="userId"
-        onChange={handleChange}
+        onChange={loginFormik.handleChange}
+        value={loginFormik.values.userId}
+        error={Boolean(loginFormik.touched.userId && loginFormik.errors.userId)}
+        helperText={loginFormik.touched.userId && loginFormik.errors.userId}
         InputLabelProps={{
           classes: {
             root: textFieldStyle.labelRoot,
@@ -82,7 +98,10 @@ const LoginForm = () => {
         label="Password"
         type="password"
         fullWidth
-        onChange={handleChange}
+        onChange={loginFormik.handleChange}
+        value={loginFormik.values.password}
+        error={Boolean(loginFormik.touched.password && loginFormik.errors.password)}
+        helperText={loginFormik.touched.password && loginFormik.errors.password}
         InputLabelProps={{
           classes: {
             root: textFieldStyle.labelRoot,
@@ -97,17 +116,10 @@ const LoginForm = () => {
           }
         }}
       />
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="primary"
-        className={textFieldStyle.submit}
-        onClick={onClickSubmit}
-      >
+      <Button type="submit" fullWidth variant="contained" color="primary" className={textFieldStyle.submit}>
         Log In
       </Button>
-    </>
+    </form>
   );
 };
 
