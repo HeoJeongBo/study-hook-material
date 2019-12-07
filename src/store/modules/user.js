@@ -18,7 +18,8 @@ const initialState = {
   userId: "",
   password: "",
   requesting: false,
-  success: false
+  success: false,
+  logged: false
 };
 
 export default handleActions(
@@ -32,7 +33,8 @@ export default handleActions(
         draft.userId = action.payload.userId;
         draft.password = action.payload.password;
         draft.requesting = false;
-        draft.succes = true;
+        draft.success = true;
+        draft.logged = true;
       }),
     [LOGIN_FAILED]: (state, action) =>
       produce(state, draft => {

@@ -5,6 +5,7 @@ import { ConnectedRouter } from "connected-react-router";
 import { Switch, Route } from "react-router-dom";
 import Login from "components/Login";
 import Main from "./Main";
+import AuthRoute from "./customHook/AuthRoute";
 
 const store = configureStore();
 
@@ -14,7 +15,7 @@ function App() {
       <ConnectedRouter history={history}>
         <Switch>
           <Route exact path="/" component={Login} />
-          <Route path="/main" component={Main} />
+          <AuthRoute path="/main" component={Main} />
         </Switch>
       </ConnectedRouter>
     </Provider>

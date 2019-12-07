@@ -61,8 +61,6 @@ const LoginForm = () => {
     }
   });
 
-  console.log(loginFormik.errors);
-  console.log(loginFormik.touched);
   return (
     <form onSubmit={loginFormik.handleSubmit}>
       <TextField
