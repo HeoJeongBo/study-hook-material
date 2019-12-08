@@ -1,0 +1,8 @@
+@import url("./fonts/spoafont.css");
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Spoqa Han Sans", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

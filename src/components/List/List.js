@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardMedia, CardContent, Typography } from "@material-ui/core";
 import testImage from "resource/login_background.jpg";
 import { useDispatch } from "react-redux";
-import { push } from "connected-react-router";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -30,7 +29,8 @@ const List = () => {
   const dispatch = useDispatch();
 
   const handleCardClick = () => {
-    dispatch(push("/"));
+    dispatch({ type: "SAGA_ROUTE", payload: { path: "/" } });
+    // dispatch(push('/')); push : connected-react-router
   };
 
   return (

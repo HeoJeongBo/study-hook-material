@@ -1,5 +1,5 @@
 import { push } from "connected-react-router";
-import { put, call, takeEvery } from "redux-saga/effects";
+import { put, call, takeEvery, delay } from "redux-saga/effects";
 import * as loginActions from "store/modules/user";
 
 // worker saga : 실제 작업 수행
@@ -7,6 +7,7 @@ export function* login({ payload }) {
   // login Action before redirection
   const { userId, password } = payload;
   yield put(loginActions.createLoginStart());
+  yield delay(5000);
   yield put(loginActions.createLoginSuccess({ userId, password }));
   yield put(push("/main"));
 }

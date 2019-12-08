@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, CircularProgress, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { useFormik } from "formik";
@@ -49,6 +49,10 @@ const validate = values => {
 const LoginForm = () => {
   const textFieldStyle = useStylesTextField();
   const dispatch = useDispatch();
+  const { requesting: loginRequest, success: loginSuccess } = useSelector(({ user }) => ({
+    requesting: user.requesting,
+    success: user.success
+  }));
 
   const loginFormik = useFormik({
     initialValues: {
@@ -115,7 +119,10 @@ const LoginForm = () => {
         }}
       />
       <Button type="submit" fullWidth variant="contained" color="primary" className={textFieldStyle.submit}>
-        Log In
+        <Typography variant="h6" component="h6">
+          Log in
+          {loginRequest && <CircularProgress size={20} color="secondary" style={{ marginLeft: "10px" }} />}
+        </Typography>
       </Button>
     </form>
   );
